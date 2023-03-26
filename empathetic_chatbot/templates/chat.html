@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ChatGPT</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  	<script>
+  		$(document).ready(function(){
+        var chat_history = ''
+
+  			$("#submit").click(function(){
+  				var inputText = chat_history + ' ' + $("#input-text").val();
+          chat_history = inputText
+          $("#allmessages").append(`<div class="message sent">
+            <div class="avatar">
+              <img src="/static/img/user.png" alt="ChatGPT Avatar">
+            </div>
+            <div class="text" id="chatbox">
+              <p class="chatbot-response">`+ $("#input-text").val() +`</p>
+            </div>
+          </div>`)
+          $("#input-text").val('');
+          $("#allmessages").append(`<div class="message received">
+            <div class="avatar">
+              <img src="/static/img/dog.png" alt="ChatGPT Avatar">
+            </div>
+            <div class="text" id="chatbox">
+              <p class="chatbot-response" data-placeholder="Thinking..."></p>
+            </div>
+          </div>`)
+          // $("#sentchatbox").append("<p class='user-input'>" + inputText + "</p>");
+  				$.post("/chat", { text: inputText }, function(data){
+            // $("#allmessages").append(`<div class="message received">
+            //   <div class="avatar">
+            //     <img src="https://i.imgur.com/PdTaXSp.png" alt="ChatGPT Avatar">
+            //   </div>
+            //   <div class="text" id="chatbox">
+            //     <p class="chatbot-response">`+ data.response + `</p>
+            //   </div>
+            // </div>`)
+            $(".chatbot-response:last").val('')
+            $(".chatbot-response:last").append(data.response);
+  					// $("#chatbox").scrollTop($("#chatbox").prop("scrollHeight"));
+            $("#allmessages").scrollTop($("#allmessages").prop("scrollHeight"));
+  				});
+  			});
+  			$("#input-text").keyup(function(event){
+  				if (event.keyCode === 13) {
+  					$("#submit").click();
+  				}
+  			});
+  		});
+
+
+  	</script>
+  </head>
+  <body>
+    <div class="chat-window">
+      <div class="messages" id="allmessages">
+        <div class="message received">
+          <div class="avatar">
+            <img src="/static/img/dog.png" alt="ChatGPT Avatar">
+          </div>
+          <div class="text" id="chatbox">
+            <p class="chatbot-response">Hello! How can I help you today?</p>
+          </div>
+        </div>
+
+        <!-- <div class="message sent">
+          <div class="avatar">
+            <img src="https://i.imgur.com/PdTaXSp.png" alt="ChatGPT Avatar">
+          </div>
+          <div class="text" id="sentchatbox">
+          </div>
+        </div>
+
+        <div class="message received">
+          <div class="avatar">
+            <img src="https://i.imgur.com/PdTaXSp.png" alt="ChatGPT Avatar">
+          </div>
+          <div class="text" id="chatbox">
+            <p class="chatbot-response">Hello 2</p>
+          </div>
+        </div> -->
+        <!-- Additional messages will be displayed here -->
+      </div>
+      <div class="input-container" id="input-container">
+        <input type="text" id="input-text" placeholder="Type your message here...">
+        <button id="submit">Send</button>
+      </div>
+    </div>
+  </body>
+</html>
