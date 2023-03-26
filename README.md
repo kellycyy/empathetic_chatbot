@@ -19,4 +19,3 @@ We learned the immense power of existing LLM/AI tools such as Langchain, Openai 
 ## What's next for SkyPup
 The next step would be to integrate multi-modal support into SkyPup. A lot of time, it can be helpful for users to explain to LLMs what they are facing using images, videos and even sounds (like music they are listening to). With the upcoming wave of LLMs being multimodal (such as GPT4), this could really be a game changer.
 
-Built With
